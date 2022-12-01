@@ -5,107 +5,82 @@ public class StringListImpl implements StringList {
 
     private final String[] arrayList;
 
+    private int size;
+
+    public StringListImpl() {
+        arrayList = new String[7];
+    }
+
     public StringListImpl(int size) {
         this.arrayList = new String[size];
     }
 
     @Override
     public String add(String item) {
-        if (item == null) {
-            throw new WorkingArrayStringListException("Parameter is null.");
-        }
-        for (int i = 0; i < arrayList.length; i++) {
-            if (arrayList[i] == null) {
-                arrayList[i] = item;
-                return item;
-            }
-        }
-        throw new WorkingArrayStringListException("Array is full!");
+        validateItem(item);
+        validateSizeArray();
+        arrayList[size++] = item;
+        return item;
     }
 
     @Override
     public String add(int index, String item) {
-        if (item == null) {
-            throw new WorkingArrayStringListException("Parameter is null.");
+        validateItem(item);
+        validateSizeArray();
+        validateIndex(index);
+
+        if (index == size) {
+            arrayList[size++] = item;
+            return item;
         }
-        if (index > arrayList.length) {
-            throw new WorkingArrayStringListException("Array is full!");
-        }
-        if (arrayList[index] != null) {
-            for (int i = arrayList.length - 1; i > index; i--) {
-                arrayList[i] = arrayList[i - 1];
-            }
-        }
+
+        System.arraycopy(arrayList, index, arrayList, index +1, size - index);
         arrayList[index] = item;
+        size++;
+
         return item;
     }
 
     @Override
     public String set(int index, String item) {
-        if (item == null) {
-            throw new WorkingArrayStringListException("Parameter is null.");
-        }
-        if (index > arrayList.length) {
-            throw new WorkingArrayStringListException("Array is full!");
-        }
+        validateItem(item);
+        validateSizeArray();
         arrayList[index] = item;
         return item;
     }
 
     @Override
     public String remove(String item) {
-        if (item == null) {
-            throw new WorkingArrayStringListException("Parameter is null.");
-        }
-        int count = 0;
-        for (int i = 0; i < arrayList.length; i++) {
-            if (arrayList[i].equals(item)) {
-                count++;
-                for (; i < arrayList.length - 1; i++) {
-                    arrayList[i] = arrayList[i + 1];
-                }
-            }
-            if (i == arrayList.length - 1) {
-                arrayList[i] = null;
-            }
-        }
-        if (count == 0) {
-            throw new WorkingArrayStringListException("Parameter is not found.");
-        }
-        return item;
+        validateItem(item);
+
+        int index = indexOf(item);
+
+        return remove(index);
     }
 
     @Override
     public String remove(int index) {
-        if (index > arrayList.length) {
-            throw new WorkingArrayStringListException("Array is full!");
-        }
+        validateIndex(index);
+
         String item = arrayList[index];
-        for (int i = index; i < arrayList.length - 1; i++) {
-            arrayList[i] = arrayList[i + 1];
 
-            if (i == arrayList.length - 1) {
-                arrayList[i] = null;
-            }
-
+        if (index != size) {
+            System.arraycopy(arrayList, index +1, arrayList, index, size - index);
         }
+
+        size--;
         return item;
     }
 
     @Override
     public boolean contains(String item) {
-        for (int i = 0; i < arrayList.length; i++) {
-            if (Objects.equals(arrayList[i], item)) {
-                return true;
-            }
-        }
-        return false;
+        return indexOf(item) != -1;
     }
 
     @Override
     public int indexOf(String item) {
-        for (int i = 0; i < arrayList.length; i++) {
-            if (Objects.equals(arrayList[i], item)) {
+        for (int i = 0; i < size; i++) {
+            if (arrayList[i].equals(item)) {
                 return i;
             }
         }
@@ -114,8 +89,8 @@ public class StringListImpl implements StringList {
 
     @Override
     public int lastIndexOf(String item) {
-        for (int i = arrayList.length - 1; i >= 0; i--) {
-            if (Objects.equals(arrayList[i], item)) {
+        for (int i = size - 1; i >= 0; i--) {
+            if (arrayList[i].equals(item)) {
                 return i;
             }
         }
@@ -124,61 +99,51 @@ public class StringListImpl implements StringList {
 
     @Override
     public String get(int index) {
-        if (index > arrayList.length) {
-            throw new WorkingArrayStringListException("Array is full!");
-        }
-        if (arrayList[index] != null) {
-            return arrayList[index];
-        }
-        throw new WorkingArrayStringListException("Parameter is not found.");
+        validateIndex(index);
+        return arrayList[index];
     }
 
     @Override
     public boolean equals(StringList otherList) {
-        if (otherList == null) {
-            throw new WorkingArrayStringListException("Parameter is null");
-        }
-        if (this.equals(otherList)) {
-            return true;
-        }
-        return false;
+        return Arrays.equals(this.toArray(), otherList.toArray());
     }
 
     @Override
     public int size() {
-        int count = 0;
-        for (int i = 0; i < arrayList.length; i++) {
-            if (arrayList[i] != null) {
-                count++;
-            }
-        }
-        return count;
+        return size;
     }
 
     @Override
     public boolean isEmpty() {
-        for (int i = 0; i < arrayList.length; i++) {
-            if (arrayList[i] != null) {
-                return false;
-            }
-        }
-        return true;
+        return size == 0;
     }
 
     @Override
     public void clear() {
-        for (int i = 0; i < arrayList.length; i++) {
-            arrayList[i] = null;
-        }
+        size = 0;
     }
 
     @Override
     public String[] toArray() {
-        String[] newArray = new String[arrayList.length];
-        for (int i = 0; i < arrayList.length; i++) {
-            newArray[i] = arrayList[i];
+        return Arrays.copyOf(arrayList, size);
+    }
+
+    private void validateIndex(int index) {
+        if (index < 0 || index > size) {
+            throw new WorkingArrayStringListException("Array is full! Invalid index to add.");
         }
-        return newArray;
+    }
+
+    private void validateItem(String item) {
+        if (item == null) {
+            throw new WorkingArrayStringListException("Item is null.");
+        }
+    }
+
+    private void validateSizeArray() {
+        if (arrayList.length == size) {
+            throw new WorkingArrayStringListException("Array is full!");
+        }
     }
 
     @Override

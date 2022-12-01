@@ -3,7 +3,7 @@ import java.util.Arrays;
 public class Main {
     public static void main(String[] args) {
 
-        StringList arrayList = new StringListImpl(5);
+        StringList arrayList = new StringListImpl();
 
         System.out.println(arrayList.isEmpty());
 

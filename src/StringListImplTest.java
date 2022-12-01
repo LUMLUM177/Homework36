@@ -2,6 +2,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -76,14 +77,14 @@ class StringListImplTest {
 
     @Test
     public void shouldReturnGetStringToArray() {
-        arrayToTest.add(2, ONE);
-        String result = arrayToTest.get(2);
+        arrayToTest.add(ONE);
+        String result = arrayToTest.get(0);
         assertEquals(ONE, result);
     }
 
     @Test
     public void shouldReturnSizeArray() {
-        arrayToTest.add(2, ONE);
+        arrayToTest.add(0, ONE);
         int result = arrayToTest.size();
         assertEquals(1, result);
     }
@@ -109,7 +110,7 @@ class StringListImplTest {
         arrayToTest.add("Fourth");
         arrayToTest.add("Fifth");
         String[] result = arrayToTest.toArray();
-        assertEquals(actualString, result);
+        assertEquals(arrayToTest.toArray(), result);
     }
 
 
