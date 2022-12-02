@@ -11,6 +11,10 @@ public class StringListImpl implements StringList {
         arrayList = new String[7];
     }
 
+    public String[] getArrayList() {
+        return arrayList;
+    }
+
     public StringListImpl(int size) {
         this.arrayList = new String[size];
     }

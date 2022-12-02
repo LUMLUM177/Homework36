@@ -14,14 +14,12 @@ class StringListImplTest {
     static final String TWO = "Second";
     static final String THREE = "Third";
 
-    private StringList actualString = new StringListImpl();
-
     @Test
     public void shouldReturnAddStringToArray() {
         String result = arrayToTest.add(ONE);
-        actualString.add(0, ONE);
         assertEquals(ONE, result);
-        assertArrayEquals(new StringListImpl[]{arrayToTest}, new StringList[]{actualString});
+        String[] actualString = new String[] {ONE, null, null, null, null, null, null};
+        assertArrayEquals(arrayToTest.getArrayList(), actualString);
     }
 
     @Test
@@ -33,8 +31,8 @@ class StringListImplTest {
     public void shouldReturnSetStringToArray() {
         String result = arrayToTest.set(2, TWO);
         assertEquals(TWO, result);
-        actualString.set(2, TWO);
-        assertArrayEquals(new StringListImpl[]{arrayToTest}, new StringList[]{actualString});
+        String[] actualString = new String[] {null, null, TWO, null, null, null, null};
+        assertArrayEquals(arrayToTest.getArrayList(), actualString);
     }
 
     @Test
@@ -45,9 +43,11 @@ class StringListImplTest {
     @Test
     public void shouldReturnRemoveStringToArray() {
         arrayToTest.add(THREE);
+        arrayToTest.add(ONE);
         String result = arrayToTest.remove(THREE);
         assertEquals(THREE, result);
-        assertArrayEquals(new StringListImpl[]{arrayToTest}, new StringList[]{actualString});
+        String[] actualString = new String[] {ONE, null, null, null, null, null, null};
+        assertArrayEquals(arrayToTest.getArrayList(), actualString);
     }
 
     @Test
@@ -110,13 +110,9 @@ class StringListImplTest {
         arrayToTest.add("Fourth");
         arrayToTest.add("Fifth");
 
-        actualString.add(0, ONE);
-        actualString.add(1, TWO);
-        actualString.add(2, THREE);
-        actualString.add(3, "Fourth");
-        actualString.add(4, "Fifth");
+        String[] actualString = new String[]{ONE, TWO, THREE, "Fourth", "Fifth", null, null};
 
-        assertArrayEquals(new StringListImpl[]{arrayToTest}, new StringList[]{actualString});
+        assertArrayEquals(arrayToTest.getArrayList(), actualString);
     }
 
 

@@ -3,16 +3,18 @@ import java.util.Arrays;
 public class Main {
     public static void main(String[] args) {
 
-        StringList arrayList = new StringListImpl();
+        StringListImpl arrayList = new StringListImpl();
 
         System.out.println(arrayList.isEmpty());
 
         arrayList.add("First");
-//        arrayList.add("Second");
-//        arrayList.add("Third");
-//        arrayList.add("Fourth");
-//        arrayList.add("Fifth");
-        System.out.println(arrayList);
+        arrayList.set(1, "Second");
+        arrayList.add("Second");
+        arrayList.add("Third");
+        arrayList.add("Fourth");
+        arrayList.add("Fifth");
+
+
 
         arrayList.add(1, "Test");
         System.out.println(arrayList);
