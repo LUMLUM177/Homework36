@@ -8,10 +8,10 @@ public class Main {
         System.out.println(arrayList.isEmpty());
 
         arrayList.add("First");
-        arrayList.add("Second");
-        arrayList.add("Third");
-        arrayList.add("Fourth");
-        arrayList.add("Fifth");
+//        arrayList.add("Second");
+//        arrayList.add("Third");
+//        arrayList.add("Fourth");
+//        arrayList.add("Fifth");
         System.out.println(arrayList);
 
         arrayList.add(1, "Test");

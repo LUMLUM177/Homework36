@@ -147,6 +147,21 @@ public class StringListImpl implements StringList {
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        StringListImpl that = (StringListImpl) o;
+        return size == that.size && Arrays.equals(arrayList, that.arrayList);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = Objects.hash(size);
+        result = 31 * result + Arrays.hashCode(arrayList);
+        return result;
+    }
+
+    @Override
     public String toString() {
         return "StringListImpl{" +
                 "arrayList=" + Arrays.toString(arrayList) +

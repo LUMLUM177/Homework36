@@ -9,22 +9,19 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class StringListImplTest {
 
-    private final StringListImpl arrayToTest = new StringListImpl(5);
+    private final StringListImpl arrayToTest = new StringListImpl();
     static final String ONE = "First";
     static final String TWO = "Second";
     static final String THREE = "Third";
 
-    private String[] actualString;
-
-    @BeforeEach
-    public void setUp() {
-        actualString = new String[]{ONE, TWO, THREE, "Fourth", "Fifth"};
-    }
+    private StringList actualString = new StringListImpl();
 
     @Test
     public void shouldReturnAddStringToArray() {
         String result = arrayToTest.add(ONE);
+        actualString.add(0, ONE);
         assertEquals(ONE, result);
+        assertArrayEquals(new StringListImpl[]{arrayToTest}, new StringList[]{actualString});
     }
 
     @Test
@@ -36,6 +33,8 @@ class StringListImplTest {
     public void shouldReturnSetStringToArray() {
         String result = arrayToTest.set(2, TWO);
         assertEquals(TWO, result);
+        actualString.set(2, TWO);
+        assertArrayEquals(new StringListImpl[]{arrayToTest}, new StringList[]{actualString});
     }
 
     @Test
@@ -48,6 +47,7 @@ class StringListImplTest {
         arrayToTest.add(THREE);
         String result = arrayToTest.remove(THREE);
         assertEquals(THREE, result);
+        assertArrayEquals(new StringListImpl[]{arrayToTest}, new StringList[]{actualString});
     }
 
     @Test
@@ -109,8 +109,14 @@ class StringListImplTest {
         arrayToTest.add(THREE);
         arrayToTest.add("Fourth");
         arrayToTest.add("Fifth");
-        String[] result = arrayToTest.toArray();
-        assertEquals(arrayToTest.toArray(), result);
+
+        actualString.add(0, ONE);
+        actualString.add(1, TWO);
+        actualString.add(2, THREE);
+        actualString.add(3, "Fourth");
+        actualString.add(4, "Fifth");
+
+        assertArrayEquals(new StringListImpl[]{arrayToTest}, new StringList[]{actualString});
     }
 
 
